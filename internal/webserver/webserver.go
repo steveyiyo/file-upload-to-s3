@@ -76,7 +76,8 @@ func UploadFile(c *gin.Context) {
 }
 
 func pageNotAvailable(c *gin.Context) {
-	c.String(404, "Page not available")
+	r := Result{false, "Page not available!", ""}
+	c.JSON(404, r)
 }
 
 func Init(S3config *s3api.S3API) {
@@ -95,8 +96,10 @@ func Init(S3config *s3api.S3API) {
 
 	// API Endpoints
 	router.StaticFile("/", "./static/upload.html")
-	router.POST("/api/v1/upload", UploadFile)
 	router.NoRoute(pageNotAvailable)
+
+	apiv1 := router.Group("/api/v1/")
+	apiv1.POST("/upload", UploadFile)
 
 	// Run
 	router.Run("127.0.0.1:19725")
