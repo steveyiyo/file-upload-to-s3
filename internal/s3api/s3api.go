@@ -42,6 +42,7 @@ func New(S3_KeyID, S3_AppKey, S3_bucket, S3_Endpoint, S3_Region string) *S3API {
 	return New_Config
 }
 
+// Create Bucket
 func (s3Client *S3API) CreateBucket(bucket_name string) (bool, string) {
 	// Pre define return values
 	return_success := false
@@ -67,6 +68,7 @@ func (s3Client *S3API) CreateBucket(bucket_name string) (bool, string) {
 	return return_success, return_message
 }
 
+// Download file
 func (s3Client *S3API) DownloadFile(bucket_name, filename string) (bool, string) {
 	// Pre define return values
 	var err error
