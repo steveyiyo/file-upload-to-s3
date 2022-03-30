@@ -2,33 +2,23 @@ package s3api
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/joho/godotenv"
 )
 
-var S3_KeyID, S3_AppKey, S3_bucket, S3_Endpoint, S3_Region string
-var s3Client *s3.S3
+type S3API struct {
+	bucket     string
+	aws_config *aws.Config
+	session    *session.Session
+	client     *s3.S3
+}
 
-// Initialize S3 client
-func Init() {
-	// Get value from .env
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	S3_KeyID = os.Getenv("S3_KeyID")
-	S3_AppKey = os.Getenv("S3_AppKey")
-	S3_bucket = os.Getenv("S3_bucket")
-	S3_Endpoint = os.Getenv("S3_Endpoint")
-	S3_Region = os.Getenv("S3_Region")
+// New S3 client
+func New(S3_KeyID, S3_AppKey, S3_bucket, S3_Endpoint, S3_Region string) *S3API {
 
 	// Create S3 session
 	s3Config := &aws.Config{
@@ -37,11 +27,22 @@ func Init() {
 		Region:           aws.String("us-west-002"),
 		S3ForcePathStyle: aws.Bool(true),
 	}
+
 	newSession := session.New(s3Config)
-	s3Client = s3.New(newSession)
+	s3Client := s3.New(newSession)
+
+	New_Config := &S3API{
+		bucket:     S3_bucket,
+		aws_config: s3Config,
+		session:    newSession,
+		client:     s3Client,
+	}
+
+	// fmt.Println(S3_KeyID, S3_AppKey, S3_bucket, S3_Endpoint, S3_Region)
+	return New_Config
 }
 
-func CreateBucket(bucket_name string) (bool, string) {
+func (s3Client *S3API) CreateBucket(bucket_name string) (bool, string) {
 	// Pre define return values
 	return_success := false
 	return_message := "NULL"
@@ -55,7 +56,7 @@ func CreateBucket(bucket_name string) (bool, string) {
 	}
 
 	// If bucket not exist, create it.
-	_, err := s3Client.CreateBucket(cparams)
+	_, err := s3Client.client.CreateBucket(cparams)
 	if err != nil {
 		return_success = false
 		return_message = err.Error()
@@ -66,7 +67,7 @@ func CreateBucket(bucket_name string) (bool, string) {
 	return return_success, return_message
 }
 
-func DownloadFile(bucket_name, filename string) (bool, string) {
+func (s3Client *S3API) DownloadFile(bucket_name, filename string) (bool, string) {
 	// Pre define return values
 	var err error
 	return_success := false
@@ -77,7 +78,7 @@ func DownloadFile(bucket_name, filename string) (bool, string) {
 	key := aws.String(filename)
 
 	//Get Object
-	_, err = s3Client.GetObject(&s3.GetObjectInput{
+	_, err = s3Client.client.GetObject(&s3.GetObjectInput{
 		Bucket: bucket,
 		Key:    key,
 	})
@@ -93,29 +94,27 @@ func DownloadFile(bucket_name, filename string) (bool, string) {
 }
 
 // Upload file to S3
-func UploadFiletoS3(path, filename string) (bool, string) {
+func (s3Client *S3API) UploadFiletoS3(path, filename string) (bool, string) {
 	var err error
-
 	// Pre define return values
 	return_success := false
 	return_message := "NULL"
 
 	// Define environment variables
-	fmt.Println(S3_bucket)
-	bucket := aws.String(S3_bucket)
+	bucket := aws.String(s3Client.bucket)
 	key := aws.String(path)
 
 	// If bucket not exist, create it.
 	// return_success, return_message = CreateBucket(S3_bucket)
 
-	_, err = s3Client.PutObject(&s3.PutObjectInput{
+	_, err = s3Client.client.PutObject(&s3.PutObjectInput{
 		Body:   strings.NewReader("S3 Compatible API"),
 		Bucket: bucket,
 		Key:    key,
 	})
 	if err != nil {
 		return_success = false
-		return_message = "Failed to upload object" + S3_bucket + path + err.Error()
+		return_message = "Failed to upload object" + s3Client.bucket + path + err.Error()
 		fmt.Println(path)
 	} else {
 		return_success = true

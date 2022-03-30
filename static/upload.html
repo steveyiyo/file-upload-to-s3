@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>上傳檔案</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="https://static.yiy.tw/static/img/apple-touch-icon-114x114.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
+
+    <style>
+        body {
+            background: rgb(243, 244, 245);
+            height: 100%;
+            color: rgb(100, 108, 127);
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .dropzone {
+            background: white;
+            border-radius: 4px;
+            border: 2px dashed rgb(0, 135, 247);
+            border-image: none;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .dropzone .dz-preview .dz-image {
+            border-radius: 4px;
+        }
+        
+        .dropzone .dz-preview.dz-file-preview .dz-image {
+            background: #0387f7;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>檔案上傳寶寶</h1>
+    <section>
+        <form method="POST" class="dropzone" id="upload-form" action="/api/v1/upload">
+            <div class="dz-message">
+                點擊這裡，或將檔案拖到這邊上傳
+            </div>
+        </form>
+    </section>
+
+    <br />
+
+
+    <script>
+        var dropzone = new Dropzone('#upload-form', {
+            paramName: "upload_file",
+            maxFiles: 100000,
+        });
+    </script>
+
+</body>
+
+</html>
