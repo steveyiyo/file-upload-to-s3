@@ -9,8 +9,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/steveyiyo/image-upload/internal/s3api"
-	"github.com/steveyiyo/image-upload/package/tools"
+	"github.com/steveyiyo/file-upload-to-s3/internal/s3api"
+	"github.com/steveyiyo/file-upload-to-s3/package/tools"
 )
 
 var S3API *s3api.S3API
@@ -95,7 +95,7 @@ func Init(S3config *s3api.S3API) {
 	router.Use(cors.New(config))
 
 	// API Endpoints
-	router.StaticFile("/", "./static/upload.html")
+	router.StaticFile("/", "./static/upload.tmpl")
 	router.NoRoute(pageNotAvailable)
 
 	apiv1 := router.Group("/api/v1/")

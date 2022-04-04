@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/steveyiyo/image-upload/internal/s3api"
-	"github.com/steveyiyo/image-upload/internal/webserver"
+	"github.com/steveyiyo/file-upload-to-s3/internal/s3api"
+	"github.com/steveyiyo/file-upload-to-s3/internal/webserver"
 )
 
 var S3_KeyID, S3_AppKey, S3_bucket, S3_Endpoint, S3_Region string
