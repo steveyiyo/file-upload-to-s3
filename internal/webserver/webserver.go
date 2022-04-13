@@ -85,7 +85,7 @@ func Init(S3config *s3api.S3API) {
 	S3API = S3config
 
 	// Create a gin router
-	// gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
 
