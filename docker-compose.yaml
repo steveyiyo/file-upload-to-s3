@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+    app:
+      image: steveyiyo/file-upload-to-s3:latest
+      restart: always
+      ports:
+        - 0.0.0.0:29572:29572
+      volumes:
+        - "./static/:/app/static/"
+      environment:
+        S3_KeyID: ""
+        S3_AppKey: ""
+        S3_bucket: ""
+        S3_Endpoint: ""
+        S3_Region: ""

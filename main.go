@@ -15,7 +15,7 @@ func init() {
 	// Get value from .env
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 
 	S3_KeyID = os.Getenv("S3_KeyID")
@@ -23,6 +23,10 @@ func init() {
 	S3_bucket = os.Getenv("S3_bucket")
 	S3_Endpoint = os.Getenv("S3_Endpoint")
 	S3_Region = os.Getenv("S3_Region")
+
+	if S3_KeyID == "" || S3_AppKey == "" || S3_bucket == "" || S3_Endpoint == "" || S3_Region == "" {
+		log.Fatal("Error to loading environment.")
+	}
 }
 
 func main() {

@@ -2,6 +2,7 @@ package webserver
 
 import (
 	"io"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -10,7 +11,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/steveyiyo/file-upload-to-s3/internal/s3api"
-	"github.com/steveyiyo/file-upload-to-s3/package/tools"
+	"github.com/steveyiyo/file-upload-to-s3/pkg/tools"
 )
 
 var S3API *s3api.S3API
@@ -102,5 +103,7 @@ func Init(S3config *s3api.S3API) {
 	apiv1.POST("/upload", UploadFile)
 
 	// Run
-	router.Run("127.0.0.1:19725")
+	host_run := "0.0.0.0:29572"
+	log.Println(host_run)
+	router.Run(host_run)
 }

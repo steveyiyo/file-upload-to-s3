@@ -13,3 +13,11 @@ For the docker usage guide, It will release soon.
 ## API Endpoints
 
 HTTP POST /api/v1/upload
+
+## Deploy
+
+Edit environment in the [docker-compose.yaml](docker-compose.yaml), and run it.
+
+```
+docker-compose up -d
+```
