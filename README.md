@@ -1,12 +1,11 @@
-# Image Upload
+# Upload file to S3
 
-Actually, it's a restful API that can upload files to s3.
+A restful API that can upload files to s3.
 
-## Uasge
+## How to use?
 
-Download the latest release version, and copy .env.example to .env.
-
-Finish the .env file, and run the binary file to start the server.
+Download the latest release version, and copy `.env.example` to `.env`.  
+Complete the .env file, and run the binary file to start the server.
 
 For the docker usage guide, It will release soon.
 
